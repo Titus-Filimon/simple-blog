@@ -13,7 +13,8 @@ function CreatePost({ onPostCreated }) {
   };
 
   // Handle the form submission
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     if (title.trim() && content.trim()) {
       try {
         // Define the payload in the correct format
@@ -23,7 +24,7 @@ function CreatePost({ onPostCreated }) {
         };
 
         // Make the POST request to the backend
-        await axios.post("http://localhost:8000/posts/", postData, {
+        const response = await axios.post("http://localhost:8000/posts/", postData, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -31,9 +32,8 @@ function CreatePost({ onPostCreated }) {
 
         console.log("Post created successfully");
 
-        // Trigger refresh or re-fetch posts if needed
         if (onPostCreated) {
-          onPostCreated(postData);
+          onPostCreated(response.data); // Pass the newly created post from backend to the handler
         }
 
         // Clear the form after successful post creation

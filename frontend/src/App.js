@@ -27,16 +27,8 @@ function App() {
   }, []);
 
   // Create Post Handler
-  const handleCreate = async (newPostData) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/posts/",
-        newPostData
-      );
-      setPosts((prevPosts) => [...prevPosts, response.data]); // Add the newly created post to the existing posts
-    } catch (error) {
-      console.error("Error creating post:", error);
-    }
+  const handleCreate = (newPostData) => {
+    setPosts((prevPosts) => [...prevPosts, newPostData]); // Add the newly created post to the existing posts without re-fetching
   };
 
   // Update Post Handler (only when the update is submitted)

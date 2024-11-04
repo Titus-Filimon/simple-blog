@@ -13,8 +13,13 @@ function RichTextEditor({ initialContent = '', onSave }) {
   }, [content, onSave]);
 
   return (
-    <Box>
-      <ReactQuill value={content} onChange={setContent} theme="snow" />
+    <Box sx={{height: '300px', mb: 2}}>
+      <ReactQuill
+      value={content}
+      onChange={setContent}
+      theme="snow"
+      style={{ height: '250px'}}
+      />
     </Box>
   );
 }
