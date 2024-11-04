@@ -1,17 +1,17 @@
-from rest_framework import generics, viewsets
+# views.py
+from rest_framework import viewsets
 from .models import Post
 from .serializers import PostSerializer
 
-# List and Create Posts
-class PostListCreateView(generics.ListCreateAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
+class IsSuperUser(permissions.BasePermission):
+    """
+    Custom permission to only allow superusers to edit or delete posts.
+    """
 
-# Retrieve, Update, and Delete a Post
-class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
+    def has_permission(self, request, view):
+        return request.user and request.user.is_superuser
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
