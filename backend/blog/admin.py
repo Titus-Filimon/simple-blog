@@ -1,7 +1,9 @@
 from django.contrib import admin
+from django_summernote.admin import SummernoteModelAdmin
 from .models import Post
 
 @admin.register(Post)  # Register the Post model with the admin site
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title', 'created_at', 'updated_at')  # Fields to display in the list view
     search_fields = ('title',)  # Add a search box for the title field
+    summernote_fields = ('content',)  # Fields to be edited with Summernote editor

@@ -1,11 +1,11 @@
 from django.db import models
-
+from django_summernote.fields import SummernoteTextField
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)    # Timestamp when created
-    updated_at = models.DateTimeField(auto_now=True)        # Timestamp when updated
+    content = SummernoteTextField()  # Summernote field for rich text
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title

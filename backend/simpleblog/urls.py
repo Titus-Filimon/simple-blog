@@ -8,4 +8,5 @@ router.register(r'posts', PostViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('summernote/', include('django_summernote.urls')),
 ]
