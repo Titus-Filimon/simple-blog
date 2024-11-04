@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, Card, CardContent, Typography, Box } from "@mui/material";
+import React from 'react';
+import { Button, Card, CardContent, Typography, Box } from '@mui/material';
 
 function PostList({ posts, onEdit, onDelete }) {
   return (
@@ -7,25 +7,25 @@ function PostList({ posts, onEdit, onDelete }) {
       {posts.map((post) => (
         <Card key={post.id} sx={{ marginBottom: 2 }}>
           <CardContent>
-            <Typography color="textSecondary">Post ID: {post.id}</Typography>
+            <Typography variant="h6" color="textSecondary">Post ID: {post.id}</Typography>
 
             <Box display="flex" alignItems="center" mb={1}>
               <Typography variant="h5" gutterBottom sx={{ marginRight: 1 }}>
                 {post.title}
               </Typography>
               {post.updated_at && post.updated_at !== post.created_at && (
-                <Typography
-                  variant="caption"
-                  color="primary"
-                  sx={{ fontWeight: "bold" }}
-                >
+                <Typography variant="caption" color="primary" sx={{ fontWeight: 'bold' }}>
                   Edited
                 </Typography>
               )}
             </Box>
-            <Box>
-              <Typography paragraph>{post.content}</Typography>
-            </Box>
+
+            {/* Display the rich text content */}
+            <Typography
+              variant="body2"
+              paragraph
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
 
             <Typography variant="body2" color="textSecondary">
               Created: {new Date(post.created_at).toLocaleString()}
@@ -37,19 +37,10 @@ function PostList({ posts, onEdit, onDelete }) {
               </Typography>
             )}
 
-            <Button
-              onClick={() => onEdit(post)}
-              variant="outlined"
-              sx={{ marginRight: 1, marginTop: 1 }}
-            >
+            <Button onClick={() => onEdit(post)} variant="outlined" sx={{ marginRight: 1, marginTop: 1 }}>
               Edit
             </Button>
-            <Button
-              onClick={() => onDelete(post.id)}
-              variant="outlined"
-              color="error"
-              sx={{ marginTop: 1 }}
-            >
+            <Button onClick={() => onDelete(post.id)} variant="outlined" color="error" sx={{ marginTop: 1 }}>
               Delete
             </Button>
           </CardContent>

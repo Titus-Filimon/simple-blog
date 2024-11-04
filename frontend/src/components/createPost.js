@@ -1,40 +1,72 @@
-import React, { useState } from 'react';
-import { Button, TextField, Box, Typography } from '@mui/material';
+import React, { useState } from "react";
+import { TextField, Button, Box } from "@mui/material";
+import RichTextEditor from "./richTextEditor";
+import axios from "axios";
 
-const CreatePost = ({ onCreate }) => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+function CreatePost({ onPostCreated }) {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const newPostData = { title, content };
-    await onCreate(newPostData); // This will call the handler in App.js and then fetchPosts
-    setTitle('');
-    setContent('');
+  // Handle saving the content from the editor automatically
+  const handleSaveContent = (newContent) => {
+    setContent(newContent);
+  };
+
+  // Handle the form submission
+  const handleSubmit = async () => {
+    if (title.trim() && content.trim()) {
+      try {
+        // Define the payload in the correct format
+        const postData = {
+          title: title,
+          content: content, // Assuming content is HTML from rich text editor
+        };
+
+        // Make the POST request to the backend
+        await axios.post("http://localhost:8000/posts/", postData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        console.log("Post created successfully");
+
+        // Trigger refresh or re-fetch posts if needed
+        if (onPostCreated) {
+          onPostCreated(postData);
+        }
+
+        // Clear the form after successful post creation
+        setTitle("");
+        setContent("");
+      } catch (error) {
+        console.error("Error creating post:", error);
+      }
+    } else {
+      console.error("Title and content are required");
+    }
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ marginBottom: 4, padding: 2, backgroundColor: '#f7f7f7', borderRadius: 2 }}>
-      <Typography variant="h6" gutterBottom>Create a New Post</Typography>
+    <Box sx={{ marginBottom: 4 }}>
       <TextField
-        fullWidth
         label="Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        margin="normal"
-      />
-      <TextField
         fullWidth
-        label="Content"
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
         margin="normal"
-        multiline
-        rows={4}
       />
-      <Button type="submit" variant="contained" sx={{ marginTop: 2 }}>Create Post</Button>
+      <RichTextEditor initialContent={content} onSave={handleSaveContent} />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleSubmit}
+        sx={{ marginTop: 2 }}
+      >
+        Create Post
+      </Button>
     </Box>
   );
-};
+}
 
 export default CreatePost;

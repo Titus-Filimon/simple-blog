@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-import CreatePost from './components/createPost';
-import PostList from './components/postList';
-import UpdatePost from './components/updatePost';
+import CreatePost from "./components/createPost";
+import PostList from "./components/postList";
+import UpdatePost from "./components/updatePost";
 
-import { Container, Typography } from '@mui/material';
+import { Container, Typography } from "@mui/material";
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -14,10 +14,10 @@ function App() {
   // Fetch all posts from the backend (Initial Load)
   const fetchPosts = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/posts/');
+      const response = await axios.get("http://localhost:8000/posts/");
       setPosts([...response.data]); // Spread operator to create a new array reference to trigger re-render
     } catch (error) {
-      console.error('Error fetching posts:', error);
+      console.error("Error fetching posts:", error);
     }
   };
 
@@ -29,21 +29,27 @@ function App() {
   // Create Post Handler
   const handleCreate = async (newPostData) => {
     try {
-      await axios.post('http://localhost:8000/posts/', newPostData);
-      await fetchPosts(); // Re-fetch posts after creating a post
+      const response = await axios.post(
+        "http://localhost:8000/posts/",
+        newPostData
+      );
+      setPosts((prevPosts) => [...prevPosts, response.data]); // Add the newly created post to the existing posts
     } catch (error) {
-      console.error('Error creating post:', error);
+      console.error("Error creating post:", error);
     }
   };
 
   // Update Post Handler (only when the update is submitted)
   const handleUpdateSubmit = async (updatedPost) => {
     try {
-      await axios.put(`http://localhost:8000/posts/${updatedPost.id}/`, updatedPost);
+      await axios.put(
+        `http://localhost:8000/posts/${updatedPost.id}/`,
+        updatedPost
+      );
       await fetchPosts(); // Re-fetch posts after successfully updating a post
       setEditingPost(null); // Close the editing form
     } catch (error) {
-      console.error('Error updating post:', error);
+      console.error("Error updating post:", error);
     }
   };
 
@@ -53,13 +59,15 @@ function App() {
       await axios.delete(`http://localhost:8000/posts/${id}/`);
       await fetchPosts(); // Re-fetch posts after deleting a post
     } catch (error) {
-      console.error('Error deleting post:', error);
+      console.error("Error deleting post:", error);
     }
   };
 
   return (
     <Container maxWidth="md" sx={{ marginTop: 4 }}>
-      <Typography variant="h4" gutterBottom>My Blog</Typography>
+      <Typography variant="h4" gutterBottom>
+        My Blog
+      </Typography>
       {editingPost ? (
         <UpdatePost
           post={editingPost}
@@ -67,7 +75,7 @@ function App() {
           cancelEdit={() => setEditingPost(null)}
         />
       ) : (
-        <CreatePost onCreate={handleCreate} />
+        <CreatePost onPostCreated={handleCreate} />
       )}
       <PostList
         posts={posts}
