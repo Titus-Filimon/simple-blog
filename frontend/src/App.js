@@ -55,6 +55,16 @@ function App() {
     }
   };
 
+  // Bulk Delete Handler
+  const handleBulkDelete = async (ids) => {
+    try {
+      await axios.post("http://localhost:8000/posts/bulk_delete/", { ids });
+      await fetchPosts(); // Re-fetch posts after bulk deleting
+    } catch (error) {
+      console.error("Error bulk deleting posts:", error);
+    }
+  };
+
   return (
     <Container maxWidth="md" sx={{ marginTop: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -73,6 +83,7 @@ function App() {
         posts={posts}
         onEdit={(post) => setEditingPost(post)} // Set the post for editing, but don’t trigger fetch
         onDelete={handleDelete}
+        onBulkDelete={handleBulkDelete}
       />
     </Container>
   );
