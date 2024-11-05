@@ -11,3 +11,48 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* 
+
+    Manually add react-quill CSS classes because for whatever reason 
+    the style of the classes is empty, EVEN THOUGH the classes are assigned correctly...
+
+*/
+
+.ql-align-right { text-align: right; }
+.ql-align-center { text-align: center; }
+.ql-align-left { text-align: left; }
+.ql-align-justify { text-align: justify; }
+.ql-size-small { font-size: 0.75em; }
+.ql-size-large { font-size: 1.5em; }
+.ql-size-huge { font-size: 2.5em; }
+.ql-bold { font-weight: bold; }
+.ql-italic { font-style: italic; }
+.ql-underline { text-decoration: underline; }
+.ql-strike { text-decoration: line-through; }
+.ql-header { /* For headings */ }
+.ql-header-1 { font-size: 2em; font-weight: bold; }
+.ql-header-2 { font-size: 1.5em; font-weight: bold; }
+.ql-blockquote { padding: 10px; border-left: 4px solid #ccc; margin: 1em 0; }
+.ql-code-block { background-color: #f3f3f3; padding: 10px; border-radius: 3px; }
+.ql-list { list-style-type: none; }
+.ql-list-ordered { list-style-type: decimal; margin-left: 1.5em; }
+.ql-list-bullet { list-style-type: disc; margin-left: 1.5em; }
+.ql-indent-1 { padding-left: 3em; }
+.ql-indent-2 { padding-left: 6em; }
+.ql-indent-3 { padding-left: 9em; }
+.ql-indent-4 { padding-left: 12em; }
+.ql-indent-5 { padding-left: 15em; }
+.ql-color { color: inherit; }
+.ql-background { background-color: inherit; }
+.ql-color-red { color: red; }
+.ql-background-yellow { background-color: yellow; }
+.ql-direction-rtl { direction: rtl; text-align: inherit; }
+.ql-direction-ltr { direction: ltr; text-align: inherit; }
+.ql-code { font-family: monospace; }
+.ql-link { text-decoration: underline; color: blue; cursor: pointer; }
+.ql-image { max-width: 100%; }
+.ql-video { max-width: 100%; }
+.ql-embed { display: block; max-width: 100%; }
+
+
