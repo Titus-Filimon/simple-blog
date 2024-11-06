@@ -27,6 +27,7 @@ class LoginView(APIView):
                 {"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
             )
 
+
 class IsSuperUser(permissions.BasePermission):
     """
     Custom permission to only allow superusers to edit or delete posts.
@@ -39,6 +40,11 @@ class IsSuperUser(permissions.BasePermission):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
     # Bulk deletion
     @action(detail=False, methods=["post"])

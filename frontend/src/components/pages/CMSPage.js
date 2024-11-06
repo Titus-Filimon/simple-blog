@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import CreatePost from "./createPost";
-import PostList from "./postList";
-import UpdatePost from "./updatePost";
+import CreatePost from "../createPost";
+import PostList from "../postList";
+import UpdatePost from "../updatePost";
 
 import { Container, Typography } from "@mui/material";
 

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import LoginPage from "./components/LoginPage";
-import BlogPage from "./components/BlogPage";
-import CMSPage from "./components/CMSPage";
+import LoginPage from "./components/pages/LoginPage";
+import BlogPage from "./components/pages/BlogPage";
+import CMSPage from "./components/pages/CMSPage";
+import PostDetail from "./components/BlogPostPage";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,14 +18,11 @@ function App() {
   const handleLogin = (token) => {
     localStorage.setItem("authToken", token);
     setIsAuthenticated(true);
-    console.log('Logged in');
-    
   };
 
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     setIsAuthenticated(false);
-    console.log('Logged out');
   };
 
   return (
@@ -33,6 +31,7 @@ function App() {
       <Routes>
         <Route path="/admin/login" element={<LoginPage onLogin={handleLogin} />} />
         <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:id" element={<PostDetail />} />
         <Route
           path="/admin"
           element={isAuthenticated ? <CMSPage /> : <Navigate to="/admin/login" />}
