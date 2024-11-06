@@ -14,7 +14,11 @@ function CMSPage() {
   // Fetch all posts from the backend (Initial Load)
   const fetchPosts = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/posts/");
+      const response = await axios.get("http://localhost:8000/posts/", {
+        headers: {
+          Authorization: `Token ${localStorage.getItem("authToken")}`,
+        },
+      });
       setPosts([...response.data]); // Spread operator to create a new array reference to trigger re-render
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -36,7 +40,12 @@ function CMSPage() {
     try {
       await axios.put(
         `http://localhost:8000/posts/${updatedPost.id}/`,
-        updatedPost
+        updatedPost,
+        {
+          headers: {
+            Authorization: `Token ${localStorage.getItem("authToken")}`,
+          },
+        }
       );
       await fetchPosts(); // Re-fetch posts after successfully updating a post
       setEditingPost(null); // Close the editing form
@@ -48,7 +57,11 @@ function CMSPage() {
   // Delete Post Handler
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/posts/${id}/`);
+      await axios.delete(`http://localhost:8000/posts/${id}/`, {
+        headers: {
+          Authorization: `Token ${localStorage.getItem("authToken")}`,
+        },
+      });
       await fetchPosts(); // Re-fetch posts after deleting a post
     } catch (error) {
       console.error("Error deleting post:", error);
@@ -58,7 +71,15 @@ function CMSPage() {
   // Bulk Delete Handler
   const handleBulkDelete = async (ids) => {
     try {
-      await axios.post("http://localhost:8000/posts/bulk_delete/", { ids });
+      await axios.post(
+        "http://localhost:8000/posts/bulk_delete/",
+        { ids },
+        {
+          headers: {
+            Authorization: `Token ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
       await fetchPosts(); // Re-fetch posts after bulk deleting
     } catch (error) {
       console.error("Error bulk deleting posts:", error);
@@ -68,7 +89,7 @@ function CMSPage() {
   return (
     <Container maxWidth="md" sx={{ marginTop: 4 }}>
       <Typography variant="h4" gutterBottom>
-        My Blog
+        Admin Dashboard
       </Typography>
       {editingPost ? (
         <UpdatePost

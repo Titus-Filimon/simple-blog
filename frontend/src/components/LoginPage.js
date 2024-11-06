@@ -1,36 +1,38 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Box, TextField, Button, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Box } from '@mui/material';
 
-function LoginPage() {
+function LoginPage({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
       const response = await axios.post('http://localhost:8000/login/', {
         username,
         password,
       });
 
-      if (response.status === 200) {
-        // Store auth token in local storage for use in authenticated requests
-        localStorage.setItem('authToken', response.data.token);
-        // Redirect to the CMS page
-        navigate('/cms');
+      if (response.data && response.data.token) {
+        console.log('Login response received');
+        onLogin(response.data.token); // Call the function passed from App.js
+        navigate('/admin');
+      } else {
+        console.error('No token received from server');
       }
     } catch (error) {
-      setError('Invalid username or password');
+      console.error('Error logging in:', error);
     }
   };
 
   return (
-    <Box sx={{ maxWidth: 400, mx: 'auto', mt: 5 }}>
-      <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+    <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 400, margin: 'auto', marginTop: 8 }}>
+      <Typography variant="h5" gutterBottom>
+        Login
+      </Typography>
       <TextField
         label="Username"
         value={username}
@@ -46,12 +48,7 @@ function LoginPage() {
         fullWidth
         margin="normal"
       />
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleLogin}
-        sx={{ mt: 2 }}
-      >
+      <Button variant="contained" color="primary" type="submit" fullWidth sx={{ marginTop: 2 }}>
         Login
       </Button>
     </Box>

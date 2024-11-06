@@ -1,32 +1,43 @@
-import React from 'react';
-import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 
-function Navbar() {
+function Navbar({ isAuthenticated, handleLogout }) {
+  const navigate = useNavigate();
+
+  const handleAuthAction = () => {
+    if (isAuthenticated) {
+      handleLogout();
+      navigate("/admin/login");
+    } else {
+      navigate("/admin/login");
+    }
+  };
+
   return (
     <AppBar position="static" color="primary">
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <Link to="/blog" style={{ textDecoration: "none", color: "inherit" }}>
             Simple Blog
           </Link>
         </Typography>
-        
-        <Box sx={{ display: 'flex', gap: 2 }}>
+
+        <Box sx={{ display: "flex", gap: 2 }}>
           <Button color="inherit">
-            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link to="/blog" style={{ textDecoration: "none", color: "inherit" }}>
               Home
             </Link>
           </Button>
-          <Button color="inherit">
-            <Link to="/cms" style={{ textDecoration: 'none', color: 'inherit' }}>
-              CMS
-            </Link>
-          </Button>
-          <Button color="inherit">
-            <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
-              Login
-            </Link>
+          {isAuthenticated && (
+            <Button color="inherit">
+              <Link to="/admin" style={{ textDecoration: "none", color: "inherit" }}>
+                Dashboard
+              </Link>
+            </Button>
+          )}
+          <Button color="inherit" onClick={handleAuthAction}>
+            {isAuthenticated ? "Logout" : "Login"}
           </Button>
         </Box>
       </Toolbar>
